@@ -1,0 +1,19 @@
+<html>
+    <title>
+        The retry CAPTCHA page
+    </title>
+    <style>
+        body { font-family: Tahoma, Verdana, Arial, sans-serif; }
+    </style>
+    <body>
+        <div align="center">
+            <p> Your last input CAPTHCA is incorrect. please try again.</p>
+            <img src="captcha.jpg" alt="Captcha image">
+            <form action="/verify" method="POST">
+                CATPCHA: 
+                <input type="text" name="response" />
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    </body>
+</html>
