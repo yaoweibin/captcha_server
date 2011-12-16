@@ -1,1 +1,52 @@
-test
+= An efficient CAPTCHA server
+
+
+== Description
+
+This server is built on Nginx and Memcached. It stores all the CAPTCHA image in
+the memcached. When the new request cames, Nginx will reply a CAPTCHA page. If the
+client passes the verification, He will be given a secure cookie. With this
+cookie, client can visit all the resources in the server. 
+
+
+== Component 
+
+* The derivate of Nginx: ngx_openresty(http://openresty.org/).
+* My secure cookie module(https://github.com/yaoweibin/nginx_secure_cookie_module).
+* Memcached
+* JCaptcha 2.0(http://jcaptcha.sourceforge.net/)
+
+
+== Installation
+
+=== Install the memcached
+$wget http://memcached.googlecode.com/files/memcached-1.4.10.tar.gz
+$tar zxvf memcached-1.4.10.tar.gz
+$cd memcached-1.4.10
+$./configure && make
+$sudo make install
+$/usr/local/bin/memcached -d
+
+=== Generate the CAPTCHA image
+$cd /path/to/captcha_server
+$cd captcha
+$./makeimg.sh # 10000 images will be created in the img directory
+$ruby put_img.rb #You need the memcached gem packet
+
+=== Install the Nginx
+$wget http://agentzh.org/misc/nginx/ngx_openresty-1.0.10.24.tar.gz
+$tar zxvf ngx_openresty-1.0.10.24.tar.gz
+$cd ngx_openresty-1.0.10.24
+$git clone git://github.com/yaoweibin/nginx_secure_cookie_module.git
+$./configure  --with-debug --with-luajit \
+        --add-module=nginx_secure_cookie_module
+$make
+$sudo make install
+
+=== Copy the configure and pages
+$cd /path/to/captcha_server
+$cp conf/nginx.conf /path/to/nginx.conf
+$cp html/* /path/to/html/   #this is your root directory
+
+=== Start the Nginx
+$sudo /usr/loca/nginx/sbin/nginx -c /path/to/nginx.conf

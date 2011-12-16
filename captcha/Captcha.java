@@ -27,7 +27,7 @@ class Captcha {
         for (int i = 0; i < 10000; i++) {
             String word = getRandomString(7);
             BufferedImage bi = gen.getImage(word);
-            String filename = word + ".jpg";
+            String filename = "img/" + word + ".jpg";
             File out = new File(filename);
             ImageIO.write(bi, "jpg", out); 
         }
